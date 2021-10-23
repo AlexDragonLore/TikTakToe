@@ -72,9 +72,12 @@ namespace TicTacToe
                 GameField.RowDefinitions.Add(new RowDefinition());
                 GameField.ColumnDefinitions.Add(new ColumnDefinition());
             }
-            var fontSize = Convert.ToInt32(GameField.ActualWidth / size * 0.7);
+            var minSuzeBorder = GameField.ActualWidth > GameField.ActualHeight ? GameField.ActualHeight : GameField.ActualWidth;
+
+            var marginSize = Convert.ToInt32(minSuzeBorder / size * 0.13);
+            var fontSize = Convert.ToInt32(minSuzeBorder / size * 0.85);
             var margin = new Thickness(1, 1, 1, 1);
-            var padding = new Thickness(-7, -7, -3, -3);
+            var padding = new Thickness(-marginSize, -marginSize - 3, -3, -3);
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
@@ -89,7 +92,6 @@ namespace TicTacToe
                 }
             }
         }
-
         private void Field_TurnChanged(object sender, EventArgs e)
         {
             if (++_turn == MaxTurns)
