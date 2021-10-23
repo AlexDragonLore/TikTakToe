@@ -58,11 +58,8 @@ namespace TicTacToe
         }
         private void TurnSmartBot(int length)
         {
-            if (_field.CurrentSymbol != _symbolBot)
-            {
-                return;
-            }
-            if (_field.MaxTurns == _field.Turn)
+
+            if (_field.IsEndGame || _field.CurrentSymbol != _symbolBot || _field.MaxTurns == _field.Turn)
             {
                 return;
             }

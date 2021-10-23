@@ -20,6 +20,7 @@ namespace TicTacToe
         public Button[,] ButtonsTicTacToe;
         public short[,] СheckToWin = { { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 } };
         public int ConditionalToWin;
+        public bool IsEndGame = false;
         private bool _isTurnCross = true;
         private int _turn = 0;
         
@@ -93,12 +94,17 @@ namespace TicTacToe
         {
             if (++_turn == MaxTurns)
             {
+                IsEndGame = true;
                 MessageBox.Show($"Игра окончена, Закончились клетки", "Конец игры");
             }
         }
 
         private void PersonTurnClick(object sender, RoutedEventArgs e)
         {
+            if (IsEndGame)
+            {
+                return;
+            }
             var button = e.Source as Button;
             if (button.Content != "")
             {
@@ -151,6 +157,7 @@ namespace TicTacToe
             }
             if (vertical >= ConditionalToWin || rightVericalTop >= ConditionalToWin || horisontal >= ConditionalToWin || leftVericalTop >= ConditionalToWin)
             {
+                IsEndGame = true;
                 return true;
             }
             return false ;
