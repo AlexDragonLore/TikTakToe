@@ -112,16 +112,16 @@ namespace TicTacToe
                         {
                             break;
                         }
-                        vertical += lineNumber % 4 == 0 ? points * i : 0;
-                        rightVericalTop += lineNumber % 4 == 1 ? points * i : 0;
-                        horisontal += lineNumber % 4 == 2 ? points * i : 0;
-                        leftVericalTop += lineNumber % 4 == 3 ? points * i : 0;
+                        if (points != 1 )
+                        {
+                            points *= i * i;
+                        }
+                        vertical += lineNumber % 4 == 0 ? points : 0;
+                        rightVericalTop += lineNumber % 4 == 1 ? points : 0;
+                        horisontal += lineNumber % 4 == 2 ? points : 0;
+                        leftVericalTop += lineNumber % 4 == 3 ? points: 0;
                     }
                     else
-                    {
-                        break;
-                    }
-                    if(points == 1 && i == 3)
                     {
                         break;
                     }
