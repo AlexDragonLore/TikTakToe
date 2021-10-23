@@ -18,11 +18,12 @@ namespace TicTacToe
         public const char Zero = '◯';
         public event EventHandler TurnChanged;
         public Button[,] ButtonsTicTacToe;
-
+        public short[,] СheckToWin = { { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 } };
+        public int ConditionalToWin;
         private bool _isTurnCross = true;
         private int _turn = 0;
-        private int _conditionalToWin;
-        private short[,] _checkToWin = { { 1, 0 }, { 1, 1}, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 }};
+        
+        
 
         public int Length { get; }
         public int MaxTurns { get; }
@@ -31,6 +32,13 @@ namespace TicTacToe
             get
             {
                 return _turn;
+            }
+        }
+        public char CurrentSymbol
+        {
+            get
+            {
+                return IsTurnCross ? Cross : Zero;
             }
         }
         public bool IsTurnCross
@@ -53,7 +61,7 @@ namespace TicTacToe
             TurnChanged += Field_TurnChanged;
             MaxTurns = size * size;
             Length = size;
-            _conditionalToWin = size < 6 ? size : 5;
+            ConditionalToWin = size < 6 ? size : 5;
             GameField.Children.Clear();
             ButtonsTicTacToe = new Button[size, size];
             GameField.RowDefinitions.Clear();
@@ -81,10 +89,6 @@ namespace TicTacToe
             }
         }
 
-        public char CurrentSymbol()
-        {
-            return IsTurnCross ? Cross : Zero;
-        }
         private void Field_TurnChanged(object sender, EventArgs e)
         {
             if (++_turn == MaxTurns)
@@ -110,8 +114,7 @@ namespace TicTacToe
             }
             if (IsEndOfGame(((Cords)button.DataContext).XCord, ((Cords)button.DataContext).YCord))
             {
-                char symbol = CurrentSymbol();
-                MessageBox.Show($"Игра окончена, победила фракция {symbol}, поздравляю:D", "Конец игры");
+                MessageBox.Show($"Игра окончена, победила фракция {CurrentSymbol}, поздравляю:D", "Конец игры");
             }
             IsTurnCross = !IsTurnCross;
         }
@@ -126,15 +129,14 @@ namespace TicTacToe
             int rightVericalTop = 1;
             int horisontal = 1;
             int leftVericalTop = 1;
-            
 
-            char symbol = IsTurnCross ? Cross : Zero;
+
 
             for (int lineNumber = 0; lineNumber < 8; lineNumber++)
             {
-                for (int i = 1; i < _conditionalToWin; i++)
+                for (int i = 1; i < ConditionalToWin; i++)
                 {
-                    if (IsFillCell(xCord + _checkToWin[lineNumber, 0] * i, yCord + _checkToWin[lineNumber, 1] * i, symbol))
+                    if (IsFillCell(xCord + СheckToWin[lineNumber, 0] * i, yCord + СheckToWin[lineNumber, 1] * i, CurrentSymbol))
                     {
                         vertical += lineNumber % 4 == 0 ? 1 : 0;
                         rightVericalTop += lineNumber % 4 == 1 ? 1 : 0;
@@ -147,7 +149,7 @@ namespace TicTacToe
                     }
                 }
             }
-            if (vertical >= _conditionalToWin || rightVericalTop >= _conditionalToWin || horisontal >= _conditionalToWin || leftVericalTop >= _conditionalToWin)
+            if (vertical >= ConditionalToWin || rightVericalTop >= ConditionalToWin || horisontal >= ConditionalToWin || leftVericalTop >= ConditionalToWin)
             {
                 return true;
             }
